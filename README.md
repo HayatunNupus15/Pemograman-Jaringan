@@ -26,16 +26,6 @@ Network Monitor adalah aplikasi pemantauan jaringan yang dirancang untuk memberi
    
 3. Pantau statistik jaringan yang ditampilkan pada halaman web.
 
-## Kontribusi
-
-Kami menyambut kontribusi dari komunitas! Untuk berkontribusi pada proyek ini, ikuti langkah-langkah berikut:
-
-1. Fork repositori ini.
-2. Buat cabang fitur (`git checkout -b fitur/fitur-baru`).
-3. Lakukan perubahan pada kode.
-4. Commit perubahan Anda (`git commit -m 'Menambahkan fitur baru'`).
-5. Push ke cabang fitur (`git push origin fitur/fitur-baru`).
-6. Buat pull request.
 
 ## Lisensi
 
