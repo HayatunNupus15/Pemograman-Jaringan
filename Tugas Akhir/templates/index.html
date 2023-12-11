@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor Jaringan</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            margin-bottom: 70px; /* Tinggi footer */
+        }
+
+        .container {
+            margin-top: 30px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .info-section {
+            margin-top: 20px;
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: #343a40;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Monitor Jaringan</h1>
+        </header>
+
+        <!-- Tabel untuk menampilkan data -->
+        <div class="info-section">
+            <h4>Data Monitoring Dari Server</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Kategori</th>
+                        <th scope="col">Nilai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Diterima</td>
+                        <td><span id="received">0 B</span></td>
+                    </tr>
+                    <tr>
+                        <td>Terkirim</td>
+                        <td><span id="sent">0 B</span></td>
+                    </tr>
+                    <tr>
+                        <td>Total Koneksi</td>
+                        <td><span id="connections">0</span></td>
+                    </tr>
+                    <tr>
+                        <td>Diterima per detik</td>
+                        <td><span id="receivedPerSec">0 B/s</span></td>
+                    </tr>
+                    <tr>
+                        <td>Dikirim per detik</td>
+                        <td><span id="sentPerSec">0 B/s</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        &copy; 2023 21346011-Hayatun Nupus - Network Monitor Project
+    </footer>
+
+    <!-- Script dan library Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.1.2/socket.io.js"></script>
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        const convertSize = (sizeBytes) => {
+            const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+            for (const unit of units) {
+                if (sizeBytes < 1024.0) {
+                    return `${sizeBytes.toFixed(2)} ${unit}`;
+                }
+                sizeBytes /= 1024.0;
+            }
+        };
+
+        const processData = (data) => {
+            const { received, sent, connections, received_per_sec, sent_per_sec } = data;
+            document.getElementById('received').innerText = convertSize(received);
+            document.getElementById('sent').innerText = convertSize(sent);
+            document.getElementById('connections').innerText = connections;
+            document.getElementById('receivedPerSec').innerText = received_per_sec;
+            document.getElementById('sentPerSec').innerText = sent_per_sec;
+        };
+
+        socket.on('update_data', (data) => {
+            processData(data);
+        });
+    </script>
+</body>
+</html>
